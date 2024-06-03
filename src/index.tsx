@@ -1,26 +1,36 @@
 import {
-  requireNativeComponent,
-  UIManager,
-  Platform,
+  type ColorValue,
+  type NativeSyntheticEvent,
   type ViewStyle,
+  requireNativeComponent,
 } from 'react-native';
 
-const LINKING_ERROR =
-  `The package 'react-native-signature-view' doesn't seem to be linked. Make sure: \n\n` +
-  Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
-  '- You rebuilt the app after installing the package\n' +
-  '- You are not using Expo Go\n';
-
-type SignatureViewProps = {
-  color: string;
-  style: ViewStyle;
+type SignEvent = {
+  sign: string;
 };
 
-const ComponentName = 'SignatureViewView';
+type TRNSignatureView = {
+  style?: ViewStyle;
+  selectedTabColor?: ColorValue;
+  selectedTabTextColor?: ColorValue;
+  unselectedTabColor?: ColorValue;
+  unselectedTabTextColor?: ColorValue;
+  seekBarColor?: ColorValue;
+  clearText?: string;
+  getSignText?: string;
+  capsTabText?: boolean;
+  capsButtonText?: boolean;
+  clearButtonBgColor?: ColorValue;
+  clearTextColor?: ColorValue;
+  getSignButtonBgColor?: ColorValue;
+  getSignTextColor?: ColorValue;
+  strokeColor?: ColorValue;
+  drawStrokeWidth?: number;
+  onGetSign: (event: NativeSyntheticEvent<SignEvent>) => void;
+  onClear?: () => void;
+};
 
-export const SignatureViewView =
-  UIManager.getViewManagerConfig(ComponentName) != null
-    ? requireNativeComponent<SignatureViewProps>(ComponentName)
-    : () => {
-        throw new Error(LINKING_ERROR);
-      };
+const RNSignatureView =
+  requireNativeComponent<TRNSignatureView>('RNSignatureView');
+
+export default RNSignatureView;
