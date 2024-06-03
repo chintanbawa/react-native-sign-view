@@ -10,7 +10,7 @@ type SignEvent = {
 };
 
 type TRNSignatureView = {
-  style?: ViewStyle;
+  style: ViewStyle;
   selectedTabColor?: ColorValue;
   selectedTabTextColor?: ColorValue;
   unselectedTabColor?: ColorValue;

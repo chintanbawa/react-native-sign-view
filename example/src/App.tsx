@@ -9,21 +9,21 @@ export default function App() {
     <View style={styles.container}>
       <RNSignatureView
         style={styles.signatureView}
-        selectedTabColor="#080"
-        selectedTabTextColor="#fff"
-        unselectedTabColor="#ddd"
-        unselectedTabTextColor="#333"
-        seekBarColor="#080"
-        clearText="Wipe"
-        getSignText="Capture"
-        capsTabText={true}
-        capsButtonText
-        clearButtonBgColor="#ddd"
-        clearTextColor="#333"
-        getSignButtonBgColor="#080"
-        getSignTextColor="#fff"
-        strokeColor="#080"
-        drawStrokeWidth={20}
+        // selectedTabColor="#080"
+        // selectedTabTextColor="#fff"
+        // unselectedTabColor="#ddd"
+        // unselectedTabTextColor="#333"
+        // seekBarColor="#080"
+        // clearText="Wipe"
+        // getSignText="Capture"
+        // capsTabText={true}
+        // capsButtonText
+        // clearButtonBgColor="#ddd"
+        // clearTextColor="#333"
+        // getSignButtonBgColor="#080"
+        // getSignTextColor="#fff"
+        // strokeColor="#080"
+        // drawStrokeWidth={20}
         onGetSign={(event) => {
           setSign(event.nativeEvent.sign);
         }}
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     padding: 5,
     borderWidth: 1,
     borderColor: 'black',
-    marginTop: 10,
+    marginTop: 20,
   },
   signImage: {
     width: '100%',

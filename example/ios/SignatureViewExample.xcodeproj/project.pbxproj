@@ -15,6 +15,7 @@
 		7699B88040F8A987B510C191 /* libPods-SignatureViewExample-SignatureViewExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-SignatureViewExample-SignatureViewExampleTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		E7297B34DCD94A71D2EE74FD /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 2FCEA22EAC07AD7614524C1B /* PrivacyInfo.xcprivacy */; };
+		FC3BD6872C0D1C85005FBA2E /* Signature.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC3BD6862C0D1C85005FBA2E /* Signature.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,7 +40,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = SignatureViewExample/main.m; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = SignatureViewExample/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-SignatureViewExample-SignatureViewExampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SignatureViewExample-SignatureViewExampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2FCEA22EAC07AD7614524C1B /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = SignatureViewExample/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		2FCEA22EAC07AD7614524C1B /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = SignatureViewExample/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-SignatureViewExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignatureViewExample.debug.xcconfig"; path = "Target Support Files/Pods-SignatureViewExample/Pods-SignatureViewExample.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-SignatureViewExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignatureViewExample.release.xcconfig"; path = "Target Support Files/Pods-SignatureViewExample/Pods-SignatureViewExample.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-SignatureViewExample-SignatureViewExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignatureViewExample-SignatureViewExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-SignatureViewExample-SignatureViewExampleTests/Pods-SignatureViewExample-SignatureViewExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -47,6 +48,7 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = SignatureViewExample/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-SignatureViewExample-SignatureViewExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignatureViewExample-SignatureViewExampleTests.release.xcconfig"; path = "Target Support Files/Pods-SignatureViewExample-SignatureViewExampleTests/Pods-SignatureViewExample-SignatureViewExampleTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		FC3BD6862C0D1C85005FBA2E /* Signature.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Signature.ttf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 		13B07FAE1A68108700A75B9A /* SignatureViewExample */ = {
 			isa = PBXGroup;
 			children = (
+				FC3BD6842C0D1C34005FBA2E /* Assets */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -151,6 +154,22 @@
 				89C6BE57DB24E9ADA2F236DE /* Pods-SignatureViewExample-SignatureViewExampleTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		FC3BD6842C0D1C34005FBA2E /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				FC3BD6852C0D1C3F005FBA2E /* Fonts */,
+			);
+			name = Assets;
+			sourceTree = "<group>";
+		};
+		FC3BD6852C0D1C3F005FBA2E /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				FC3BD6862C0D1C85005FBA2E /* Signature.ttf */,
+			);
+			name = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -249,6 +268,7 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				E7297B34DCD94A71D2EE74FD /* PrivacyInfo.xcprivacy in Resources */,
+				FC3BD6872C0D1C85005FBA2E /* Signature.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -590,10 +610,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -665,10 +682,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
