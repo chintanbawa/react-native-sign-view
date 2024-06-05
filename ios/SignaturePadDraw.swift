@@ -91,6 +91,7 @@ class SignaturePadDraw: UIView {
     resetDirtyRect(touchPoint)
     paint.addLine(to: touchPoint)
     lastTouchPoint = touchPoint
+    signatureTracker?.onSignatureEnd()
     setNeedsDisplay()
   }
   

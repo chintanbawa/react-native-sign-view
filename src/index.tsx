@@ -27,6 +27,8 @@ type TRNSignatureView = {
   strokeColor?: ColorValue;
   drawStrokeWidth?: number;
   onGetSign: (event: NativeSyntheticEvent<SignEvent>) => void;
+  onDrawBegin?: () => void;
+  onDrawEnd?: () => void;
   onClear?: () => void;
 };
 

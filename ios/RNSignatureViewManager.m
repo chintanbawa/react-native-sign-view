@@ -26,6 +26,8 @@
   RCT_EXPORT_VIEW_PROPERTY(drawStrokeWidth, CGFloat)
   RCT_EXPORT_VIEW_PROPERTY(onClear, RCTDirectEventBlock)
   RCT_EXPORT_VIEW_PROPERTY(onGetSign, RCTDirectEventBlock)
+  RCT_EXPORT_VIEW_PROPERTY(onDrawBegin, RCTDirectEventBlock)
+  RCT_EXPORT_VIEW_PROPERTY(onDrawEnd, RCTDirectEventBlock)
 @end
 
 

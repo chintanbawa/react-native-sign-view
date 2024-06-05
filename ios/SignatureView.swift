@@ -12,6 +12,8 @@ class SignatureView: UIView, UITextFieldDelegate, SliderListener, SignatureTrack
   // Props Callback
   @objc var onClear: RCTDirectEventBlock?
   @objc var onGetSign: RCTDirectEventBlock?
+  @objc var onDrawBegin: RCTDirectEventBlock?
+  @objc var onDrawEnd: RCTDirectEventBlock?
   
   // Values
   private var currentText = ""
@@ -358,6 +360,16 @@ class SignatureView: UIView, UITextFieldDelegate, SliderListener, SignatureTrack
   func onSignature() {
     clearButton.isEnabled = true
     getSignButton.isEnabled = true
+      
+    if self.onDrawBegin != nil {
+      self.onDrawBegin!(["" : ""])
+    }
+  }
+    
+  func onSignatureEnd() {
+    if self.onDrawEnd != nil {
+      self.onDrawEnd!(["" : ""])
+    }
   }
   
   func onSignatureClear() {

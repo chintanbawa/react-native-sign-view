@@ -2,11 +2,15 @@ package com.signatureview.interfaces
 
 interface SignatureTracker {
 
-    fun onSignature() {
+  fun onSignature() {
 
-    }
+  }
 
-    fun onClear() {
+  fun onSignatureEnd() {
 
-    }
+  }
+
+  fun onClear() {
+
+  }
 }

@@ -8,16 +8,21 @@
 import Foundation
 
 protocol SignatureTracker {
-  func onSignature()
-  func onSignatureClear()
+    func onSignature()
+    func onSignatureEnd()
+    func onSignatureClear()
 }
 
 extension SignatureTracker {
-  func onSignature() {
-    // Default implementation
-  }
-  
-  func onSignatureClear() {
-    // Default implementation
-  }
+    func onSignature() {
+        // Default implementation
+    }
+    
+    func onSignatureEnd() {
+        // Default implementation
+    }
+    
+    func onSignatureClear() {
+        // Default implementation
+    }
 }
