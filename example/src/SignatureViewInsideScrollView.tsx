@@ -8,8 +8,8 @@ export default function SignatureViewInsideScrollView() {
   return (
     <ScrollView scrollEnabled={scrollEnabled}>
       <View style={styles.container}>
-        <View style={styles.signContainer}>
-          <Text>One View</Text>
+        <View style={styles.view}>
+          <Text style={styles.text}>One View</Text>
         </View>
         <RNSignatureView
           style={styles.signatureView}
@@ -21,7 +21,7 @@ export default function SignatureViewInsideScrollView() {
           onClear={() => setSign('')}
         />
         {sign && (
-          <View style={styles.signContainer}>
+          <View style={styles.view}>
             <Image
               source={{ uri: `data:image/png;base64,${sign}` }}
               alt="sign"
@@ -29,8 +29,8 @@ export default function SignatureViewInsideScrollView() {
             />
           </View>
         )}
-        <View style={styles.signContainer}>
-          <Text>Another View</Text>
+        <View style={styles.view}>
+          <Text style={styles.text}>Another View</Text>
         </View>
       </View>
     </ScrollView>
@@ -44,11 +44,12 @@ const styles = StyleSheet.create({
   },
   signatureView: {
     width: '100%',
-    height: 220,
+    height: 180,
+    marginTop: 10,
   },
-  signContainer: {
+  view: {
     width: '100%',
-    height: 200,
+    height: 140,
     padding: 5,
     borderWidth: 1,
     borderColor: 'black',
@@ -59,5 +60,10 @@ const styles = StyleSheet.create({
     height: '100%',
     objectFit: 'contain',
     backgroundColor: 'white',
+  },
+  text: {
+    color: '#333',
+    textAlign: 'center',
+    fontWeight: '600',
   },
 });

@@ -20,7 +20,9 @@ class SignatureView: UIView, UITextFieldDelegate, SliderListener, SignatureTrack
   private var isDrawMode = true
   private let mineShaftColor = UIColor(red: 0.20, green: 0.20, blue: 0.20, alpha: 1.00)
   private let lightSilver = UIColor(red: 0.87, green: 0.87, blue: 0.87, alpha: 1.00)
+  private let defaultBorderWidth: CGFloat = 1
   private let white = UIColor.white
+  private let black = UIColor.black
   private let transparent = UIColor.clear
   private var tabBackgroundColor = UIColor.clear
   private var selectedTabColor = UIColor.clear
@@ -33,31 +35,58 @@ class SignatureView: UIView, UITextFieldDelegate, SliderListener, SignatureTrack
   private let tabsContainer = UIStackView()
   private let drawButton = UIButton()
   private let typeButton = UIButton()
+  private let tabsDivider = UIView()
   private let signPadsContainer = UIView()
   private let signaturePadDrawContainer = UIView()
   private let signaturePadDraw = SignaturePadDraw()
   private let signPadTypeViewContainer = UIStackView()
   private let signaturePadTypeContainer = UIView()
   private let signaturePadType = SignaturePadType()
+  private let sliderDivider = UIView()
   private let slider = UISlider()
+  private let textFieldDivider = UIView()
   private let textField = SignatureTextField()
   private let actionButtonContainer = UIStackView()
   private let clearButton = UIButton()
   private let getSignButton = UIButton()
+  private let buttonsDivider = UIView()
   
   override func layoutSubviews() {
+    let tabsDividerHeight = defaultBorderWidth
+    let buttonsDividerHeight = defaultBorderWidth
+    let sliderDividerHeight = defaultBorderWidth
+    let textFieldDividerHeight = defaultBorderWidth
+    
     let parentWidth = self.bounds.width
     let parentHeight = self.bounds.height
-    tabsContainer.frame = CGRect(x: 0, y: 0, width: parentWidth, height: 30)
-    signPadsContainer.frame = CGRect(x: 0, y: 35, width: parentWidth, height: parentHeight - 60)
+    let tabsHeight = parentHeight * 0.15
+    let buttonsHeight = parentHeight * 0.15
+    let signPadsContainerHeight = parentHeight - (tabsHeight + tabsDividerHeight + buttonsHeight + buttonsDividerHeight)
+    let seekbarHeight = parentHeight * 0.15
+    let textFieldHeight = parentHeight * 0.15
+    let signaturePadTypeContainerHeight = signPadsContainerHeight - (seekbarHeight + sliderDividerHeight + textFieldHeight + textFieldDividerHeight)
+    
+    let signPadsContainerY = tabsHeight + tabsDividerHeight
+    let sliderY = signaturePadTypeContainerHeight + sliderDividerHeight
+    let textfildDividerY = sliderY + seekbarHeight
+    let textfildY = textfildDividerY + textFieldDividerHeight
+    let buttonsDividerY = signPadsContainerHeight + signPadsContainerY
+    let actionButtonsY = buttonsDividerHeight + buttonsDividerY
+      
+    tabsContainer.frame = CGRect(x: 0, y: 0, width: parentWidth, height: tabsHeight)
+    tabsDivider.frame = CGRect(x: 0, y: tabsHeight, width: parentWidth, height: tabsDividerHeight)
+    signPadsContainer.frame = CGRect(x: 0, y: signPadsContainerY, width: parentWidth, height: signPadsContainerHeight)
     signaturePadDrawContainer.frame = signPadsContainer.bounds
     signaturePadDraw.frame = signPadsContainer.bounds
-    signPadTypeViewContainer.frame = CGRect(x: 0, y: 0, width: parentWidth, height: parentHeight - 60)
-    signaturePadTypeContainer.frame = CGRect(x: 0, y: 0, width: parentWidth, height: parentHeight - 130)
+    signPadTypeViewContainer.frame = CGRect(x: 0, y: 0, width: parentWidth, height: signPadsContainerHeight)
+    signaturePadTypeContainer.frame = CGRect(x: 0, y: 0, width: parentWidth, height: signaturePadTypeContainerHeight)
     signaturePadType.frame = signaturePadTypeContainer.bounds
-    slider.frame = CGRect(x: 0, y:  parentHeight - 120, width: parentWidth, height: 20)
-    textField.frame = CGRect(x: 0, y: parentHeight - 90, width: parentWidth, height: 30)
-    actionButtonContainer.frame = CGRect(x: 0, y: signPadsContainer.bounds.height + 40, width: parentWidth, height: 30)
+    sliderDivider.frame = CGRect(x: 0, y: signaturePadTypeContainerHeight, width: parentWidth, height: sliderDividerHeight)
+    slider.frame = CGRect(x: 5, y: sliderY, width: parentWidth - 10, height: seekbarHeight)
+    textFieldDivider.frame = CGRect(x: 0, y: textfildDividerY, width: parentWidth, height: textFieldDividerHeight)
+    textField.frame = CGRect(x: 0, y: textfildY, width: parentWidth, height: textFieldHeight)
+    buttonsDivider.frame = CGRect(x: 0, y: buttonsDividerY, width: parentWidth, height: buttonsDividerHeight)
+    actionButtonContainer.frame = CGRect(x: 0, y: actionButtonsY, width: parentWidth, height: buttonsHeight)
   }
   
   override init(frame: CGRect) {
@@ -69,14 +98,13 @@ class SignatureView: UIView, UITextFieldDelegate, SliderListener, SignatureTrack
     unselectedTabColor = transparent
     selectedTabTextColor = white
     unselectedTabTextColor = mineShaftColor
-    
+      
+    self.backgroundColor = white
     // Tabs
     tabsContainer.axis = .horizontal
     tabsContainer.distribution = .fillEqually
     tabsContainer.spacing = 4
     tabsContainer.backgroundColor = tabBackgroundColor
-    tabsContainer.layer.borderWidth = 1
-    tabsContainer.layer.borderColor = UIColor.black.cgColor
     // Draw Button
     drawButton.tag = 0
     drawButton.setTitle("Draw", for: .normal)
@@ -90,44 +118,45 @@ class SignatureView: UIView, UITextFieldDelegate, SliderListener, SignatureTrack
     tabsContainer.addArrangedSubview(drawButton)
     tabsContainer.addArrangedSubview(typeButton)
     addSubview(tabsContainer)
-    
+    // Tabs Divider
+    tabsDivider.backgroundColor = black
+    addSubview(tabsDivider)
     // SignPads Container
     // SignPadDrawer Container
-    signaturePadDrawContainer.layer.borderWidth = 1
-    signaturePadDrawContainer.layer.borderColor = UIColor.black.cgColor
     // SignaturePadDraw
     signaturePadDraw.setSignatureTrackerListener(listener: self)
     signaturePadDrawContainer.addSubview(signaturePadDraw)
     signPadsContainer.addSubview(signaturePadDrawContainer)
-    
     // SignPadTypeView
     signPadTypeViewContainer.axis = .vertical
     // SignaturePadType Container
-    signaturePadTypeContainer.layer.borderWidth = 1
-    signaturePadTypeContainer.layer.borderColor = UIColor.black.cgColor
     // SignaturePadType
     signaturePadType.setSliderListener(listener: self)
     signaturePadTypeContainer.addSubview(signaturePadType)
     signPadTypeViewContainer.addSubview(signaturePadTypeContainer)
+    // Slider Divider
+    sliderDivider.backgroundColor = black
+    signPadTypeViewContainer.addSubview(sliderDivider)
     // Slider
-    slider.thumbTintColor = mineShaftColor
-    slider.tintColor = mineShaftColor
+    setSeekBarColor(mineShaftColor)
     signPadTypeViewContainer.addSubview(slider)
+    // TextField Divider
+    textFieldDivider.backgroundColor = black
+    signPadTypeViewContainer.addSubview(textFieldDivider)
     // TextField
-    textField.backgroundColor = UIColor.white
-    textField.layer.borderWidth = 1
-    textField.layer.borderColor = UIColor.black.cgColor
+    textField.backgroundColor = white
     textField.placeholder = "Type your name here"
     textField.delegate = self
     signPadTypeViewContainer.addSubview(textField)
     signPadsContainer.addSubview(signPadTypeViewContainer)
     addSubview(signPadsContainer)
     self.signPadTypeViewContainer.isHidden = true
-    
+    // Buttons Divider
+    buttonsDivider.backgroundColor = black
+    addSubview(buttonsDivider)
     // Action Buttons
     actionButtonContainer.axis = .horizontal
     actionButtonContainer.distribution = .fillEqually
-    actionButtonContainer.spacing = 10
     // Clear Button
     clearButton.setTitle("Clear", for: .normal)
     clearButton.isEnabled = false
@@ -195,12 +224,25 @@ class SignatureView: UIView, UITextFieldDelegate, SliderListener, SignatureTrack
    * Reset signature view on configurations change,
    * so that we can generate new sign with new configurations
    */
-  func resetState() {
+  private func resetState() {
     if !currentText.isEmpty {
       currentText = ""
     }
     clearButton.isEnabled = true
     getSignButton.isEnabled = true
+  }
+    
+  private func makeCircleWith(size: CGSize, backgroundColor: UIColor) -> UIImage? {
+    UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
+    let context = UIGraphicsGetCurrentContext()
+    context?.setFillColor(backgroundColor.cgColor)
+    context?.setStrokeColor(UIColor.clear.cgColor)
+    let bounds = CGRect(origin: .zero, size: size)
+    context?.addEllipse(in: bounds)
+    context?.drawPath(using: .fill)
+    let image = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    return image
   }
   
   // Props functions
@@ -236,9 +278,15 @@ class SignatureView: UIView, UITextFieldDelegate, SliderListener, SignatureTrack
     }
   }
   
-  @objc func setSeekBarColor(_ seekBarColor: UIColor?) {
-    slider.thumbTintColor = seekBarColor ?? mineShaftColor
-    slider.tintColor = seekBarColor ?? mineShaftColor
+  @objc func setSeekBarColor(_ sliderColor: UIColor?) {
+    let newSliderColor = sliderColor ?? mineShaftColor
+    let circleImage = makeCircleWith(size: CGSize(width: 20, height: 20),
+                     backgroundColor: newSliderColor)
+    let highlightImage =  makeCircleWith(size: CGSize(width: 24, height: 24),
+                                         backgroundColor: newSliderColor)
+    slider.setThumbImage(circleImage, for: .normal)
+    slider.setThumbImage(highlightImage, for: .highlighted)
+    slider.tintColor = newSliderColor
   }
   
   @objc func setClearText(_ clearText: String?) {
@@ -280,9 +328,9 @@ class SignatureView: UIView, UITextFieldDelegate, SliderListener, SignatureTrack
   }
   
   @objc func setStrokeColor(_ strokeColor: UIColor?) {
-    self.resetState()
-    self.signaturePadDraw.setStrokeColor(strokeColor ?? UIColor.black)
-    self.signaturePadType.setStrokeColor(strokeColor ?? UIColor.black)
+    resetState()
+    signaturePadDraw.setStrokeColor(strokeColor ?? UIColor.black)
+    signaturePadType.setStrokeColor(strokeColor ?? UIColor.black)
   }
   
   @objc func setDrawStrokeWidth(_ drawStrokeWidth: CGFloat) {

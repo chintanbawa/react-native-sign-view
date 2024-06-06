@@ -9,6 +9,7 @@ import android.graphics.drawable.GradientDrawable
 import android.text.InputFilter
 import android.text.InputType
 import android.util.Base64
+import android.view.View
 import android.view.View.OnClickListener
 import android.widget.Button
 import android.widget.EditText
@@ -30,17 +31,21 @@ import java.io.ByteArrayOutputStream
 
 class SignatureView(context: Context) : LinearLayout(context), SeekBarListener, SignatureTracker {
   // Values
-  private val gapInChildren = 8 * Resources.getSystem().displayMetrics.density.toInt()
   private var minValueSeekBar = 0
   private val stepSeekBar = 1
   private var currentText = ""
   private var isDrawMode = true
   private var parentWidth: Float = 1f
-  private var tabBackgroundColor = Color.parseColor("#dddddd")
-  private var selectedTabColor = Color.parseColor("#333333")
+  private val defaultBorderWidth = 1 * Resources.getSystem().displayMetrics.density.toInt()
+  private val white = Color.parseColor("#ffffff")
+  private val black = Color.parseColor("#000000")
+  private val lightGray = Color.parseColor("#dddddd")
+  private val textColor = Color.parseColor("#333333")
+  private var tabBackgroundColor = lightGray
+  private var selectedTabColor = textColor
   private var unselectedTabColor = Color.parseColor("#00000000")
-  private var selectedTabTextColor = Color.parseColor("#ffffff")
-  private var unselectedTabTextColor = Color.parseColor("#333333")
+  private var selectedTabTextColor = white
+  private var unselectedTabTextColor = textColor
 
   // Views
   private val tabsContainer: LinearLayout
@@ -56,24 +61,20 @@ class SignatureView(context: Context) : LinearLayout(context), SeekBarListener, 
 
   init {
     orientation = VERTICAL
+    setBackgroundColor(white)
 
     // Tabs
     tabsContainer = LinearLayout(context)
-    tabsContainer.layoutParams = LayoutParams(
+    val tabsLP = LayoutParams(
       LayoutParams.MATCH_PARENT, 40 * Resources.getSystem().displayMetrics.density.toInt()
     )
-    val tabsContainerBackground = GradientDrawable();
-    tabsContainerBackground.setColor(tabBackgroundColor);
-    tabsContainerBackground.setStroke(
-      1 * Resources.getSystem().displayMetrics.density.toInt(), Color.parseColor("#000000")
-    )
-    tabsContainer.background = tabsContainerBackground
+    tabsLP.setMargins(0, 0, 0, (0.5 * Resources.getSystem().displayMetrics.density).toInt())
+    tabsContainer.layoutParams = tabsLP
+    tabsContainer.setBackgroundColor(tabBackgroundColor)
     // Draw Button
     drawButton = Button(context)
     drawButton.tag = "TAB_DRAW"
-    val drawButtonLP = LayoutParams(0, LayoutParams.MATCH_PARENT, 1f);
-    drawButtonLP.setMargins(2 * Resources.getSystem().displayMetrics.density.toInt())
-    drawButton.layoutParams = drawButtonLP
+    drawButton.layoutParams = LayoutParams(0, LayoutParams.MATCH_PARENT, 1f);
     drawButton.setPadding(0)
     drawButton.text = "Draw"
     drawButton.isAllCaps = false
@@ -82,9 +83,7 @@ class SignatureView(context: Context) : LinearLayout(context), SeekBarListener, 
     // Type Button
     typeButton = Button(context)
     typeButton.tag = "TAB_TYPE"
-    val typeButtonLP = LayoutParams(0, LayoutParams.MATCH_PARENT, 1f);
-    typeButtonLP.setMargins(2 * Resources.getSystem().displayMetrics.density.toInt())
-    typeButton.layoutParams = typeButtonLP
+    typeButton.layoutParams = LayoutParams(0, LayoutParams.MATCH_PARENT, 1f);
     typeButton.setPadding(0)
     typeButton.text = "Type"
     typeButton.isAllCaps = false
@@ -93,28 +92,21 @@ class SignatureView(context: Context) : LinearLayout(context), SeekBarListener, 
     tabsContainer.addView(drawButton)
     tabsContainer.addView(typeButton)
     addView(tabsContainer)
-
+    // Divider
+    addView(getDivider())
     //SignPads Container
     val signPadsContainerFL = FrameLayout(context)
-    val signPadsContainerFLLP = LayoutParams(LayoutParams.MATCH_PARENT, 0, 1f);
-    signPadsContainerFLLP.topMargin = gapInChildren
-    signPadsContainerFL.layoutParams = signPadsContainerFLLP
+    signPadsContainerFL.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 0, 1f);
     // SignaturePadDraw
     val signaturePadDrawContainer = FrameLayout(context)
     signaturePadDrawContainer.layoutParams =
       LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-    val signaturePadDrawContainerBackground = GradientDrawable();
-    signaturePadDrawContainerBackground.setColor(Color.parseColor("#ffffff"));
-    signaturePadDrawContainerBackground.setStroke(
-      1 * Resources.getSystem().displayMetrics.density.toInt(), Color.parseColor("#000000")
-    )
-    signaturePadDrawContainer.background = signaturePadDrawContainerBackground
     signaturePadDraw = SignaturePadDraw(this)
     signaturePadDraw.layoutParams =
       LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
     signaturePadDrawContainer.addView(signaturePadDraw)
     signPadsContainerFL.addView(signaturePadDrawContainer)
-
+    // SignaturePadType View Container
     val signPadTypeViewContainerLL = LinearLayout(context)
     signPadTypeViewContainerLL.layoutParams =
       LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
@@ -122,44 +114,35 @@ class SignatureView(context: Context) : LinearLayout(context), SeekBarListener, 
     // SignaturePadType inside FrameLayout
     signaturePadTypeContainer = FrameLayout(context)
     signaturePadTypeContainer.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 0, 1f);
-    val signaturePadTypeContainerBackground = GradientDrawable();
-    signaturePadTypeContainerBackground.setColor(Color.parseColor("#ffffff"));
-    signaturePadTypeContainerBackground.setStroke(
-      1 * Resources.getSystem().displayMetrics.density.toInt(), Color.parseColor("#000000")
-    )
-    signaturePadTypeContainer.background = signaturePadTypeContainerBackground
     signaturePadTypeContainer.setPadding(10 * Resources.getSystem().displayMetrics.density.toInt())
     signaturePadType = SignaturePadType(this)
     signaturePadType.layoutParams =
       LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
     signaturePadTypeContainer.addView(signaturePadType)
     signPadTypeViewContainerLL.addView(signaturePadTypeContainer)
+    //Divider
+    signPadTypeViewContainerLL.addView(getDivider())
     // SeekBar
     seekBar = SeekBar(context)
-    val seekLP = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-    seekLP.topMargin = gapInChildren
-    seekBar.layoutParams = seekLP
-    setSeekBarColor(Color.parseColor("#333333"))
+    seekBar.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+    setSeekBarColor(textColor)
     signPadTypeViewContainerLL.addView(seekBar)
+    //Divider
+    signPadTypeViewContainerLL.addView(getDivider())
     // EditText
     editText = EditText(context)
     val editTextLP = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-    editTextLP.topMargin = gapInChildren
+    editTextLP.setMargins(2 * Resources.getSystem().displayMetrics.density.toInt())
     editText.layoutParams = editTextLP
-    editText.setPadding(8 * Resources.getSystem().displayMetrics.density.toInt())
+    editText.setPadding(2 * Resources.getSystem().displayMetrics.density.toInt())
     editText.setSingleLine()
+    editText.textSize = 14f
     editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_WORDS
-    val etBackground = GradientDrawable();
-    etBackground.setColor(Color.parseColor("#ffffff"));
-    etBackground.setStroke(
-      1 * Resources.getSystem().displayMetrics.density.toInt(), Color.parseColor("#000000")
-    )
-    editText.background = etBackground
+    editText.setBackgroundColor(white)
     editText.hint = "Type your name here"
     signPadTypeViewContainerLL.addView(editText)
     signPadTypeViewContainerLL.isInvisible = true
     signPadsContainerFL.addView(signPadTypeViewContainerLL)
-
     addView(signPadsContainerFL)
     signPadsContainerFL.post(Runnable {
       parentWidth = signPadsContainerFL.width.toFloat()
@@ -167,36 +150,31 @@ class SignatureView(context: Context) : LinearLayout(context), SeekBarListener, 
         signPadTypeViewContainerLL.isInvisible = false
       })
     })
-
+    // Divider
+    addView(getDivider())
     // Action Buttons inside LinearLayout
     val actionButtonContainer = LinearLayout(context)
-    val actionButtonsContainerLP = LayoutParams(
+    actionButtonContainer.layoutParams = LayoutParams(
       LayoutParams.MATCH_PARENT, 40 * Resources.getSystem().displayMetrics.density.toInt()
     )
-    actionButtonsContainerLP.topMargin = gapInChildren
-    actionButtonContainer.layoutParams = actionButtonsContainerLP
     // Clear Button
     clearButton = Button(context)
-    val clearButtonLP = LayoutParams(0, LayoutParams.MATCH_PARENT, 1f);
-    clearButtonLP.marginEnd = 10 * Resources.getSystem().displayMetrics.density.toInt()
-    clearButton.layoutParams = clearButtonLP
+    clearButton.layoutParams = LayoutParams(0, LayoutParams.MATCH_PARENT, 1f)
     clearButton.setPadding(0)
     clearButton.text = "Clear"
     clearButton.isAllCaps = false
     clearButton.isEnabled = false
-    clearButton.setTextColor(Color.parseColor("#333333"))
-    clearButton.setBackgroundColor(Color.parseColor("#dddddd"))
+    clearButton.setTextColor(textColor)
+    clearButton.setBackgroundColor(lightGray)
     // Get Signature Button
     getSignButton = Button(context)
-    val getSignButtonLP = LayoutParams(0, LayoutParams.MATCH_PARENT, 1f);
-    getSignButtonLP.marginStart = 10 * Resources.getSystem().displayMetrics.density.toInt()
-    getSignButton.layoutParams = getSignButtonLP
+    getSignButton.layoutParams = LayoutParams(0, LayoutParams.MATCH_PARENT, 1f);
     getSignButton.setPadding(0)
     getSignButton.text = "Get Sign"
     getSignButton.isAllCaps = false
     getSignButton.isEnabled = false
-    getSignButton.setTextColor(Color.parseColor("#ffffff"))
-    getSignButton.setBackgroundColor(Color.parseColor("#333333"))
+    getSignButton.setTextColor(white)
+    getSignButton.setBackgroundColor(textColor)
     actionButtonContainer.addView(clearButton)
     actionButtonContainer.addView(getSignButton)
     addView(actionButtonContainer)
@@ -271,6 +249,13 @@ class SignatureView(context: Context) : LinearLayout(context), SeekBarListener, 
   }
 
   // Functions
+  private fun getDivider(): View {
+    val divider = View(context)
+    divider.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, defaultBorderWidth)
+    divider.setBackgroundColor(black)
+    return divider
+  }
+
   private fun getTypeSignatureBitmap(): Bitmap {
     val bitmap = Bitmap.createBitmap(
       signaturePadType.width, signaturePadType.height, Bitmap.Config.ARGB_8888
@@ -325,12 +310,7 @@ class SignatureView(context: Context) : LinearLayout(context), SeekBarListener, 
 
   fun setUnselectedTabColor(mUnselectedTabColor: Int) {
     this.unselectedTabColor = mUnselectedTabColor
-    val tabsContainerBackground = GradientDrawable();
-    tabsContainerBackground.setColor(unselectedTabColor);
-    tabsContainerBackground.setStroke(
-      1 * Resources.getSystem().displayMetrics.density.toInt(), Color.parseColor("#000000")
-    )
-    tabsContainer.background = tabsContainerBackground
+    tabsContainer.setBackgroundColor(unselectedTabColor)
   }
 
   fun setUnselectedTabTextColor(mUnselectedTabTextColor: Int) {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, Platform, StyleSheet, View } from 'react-native';
 import RNSignatureView from 'react-native-signature-view';
 
 export default function SignatureViewInsideView() {
@@ -15,21 +15,21 @@ export default function SignatureViewInsideView() {
         seekBarColor="#080"
         clearText="Wipe"
         getSignText="Capture"
-        capsTabText={true}
+        capsTabText
         capsButtonText
         clearButtonBgColor="#ddd"
         clearTextColor="#333"
         getSignButtonBgColor="#080"
         getSignTextColor="#fff"
         strokeColor="#080"
-        drawStrokeWidth={20}
+        drawStrokeWidth={14}
         onGetSign={(event) => {
           setSign(event.nativeEvent.sign);
         }}
         onClear={() => setSign('')}
       />
       {sign && (
-        <View style={styles.signContainer}>
+        <View style={styles.view}>
           <Image
             source={{ uri: `data:image/png;base64,${sign}` }}
             alt="sign"
@@ -50,15 +50,16 @@ const styles = StyleSheet.create({
   },
   signatureView: {
     width: '100%',
-    height: 220,
+    height: Platform.OS === 'ios' ? 220 : 180,
+    borderWidth: 1,
   },
-  signContainer: {
+  view: {
     width: '100%',
     height: 100,
     padding: 5,
     borderWidth: 1,
     borderColor: 'black',
-    marginTop: 20,
+    marginTop: 10,
   },
   signImage: {
     width: '100%',

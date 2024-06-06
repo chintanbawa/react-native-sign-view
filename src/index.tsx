@@ -1,4 +1,7 @@
+import React from 'react';
 import {
+  View,
+  StyleSheet,
   type ColorValue,
   type NativeSyntheticEvent,
   type ViewStyle,
@@ -10,7 +13,7 @@ type SignEvent = {
 };
 
 type TRNSignatureView = {
-  style: ViewStyle;
+  style?: ViewStyle;
   selectedTabColor?: ColorValue;
   selectedTabTextColor?: ColorValue;
   unselectedTabColor?: ColorValue;
@@ -32,7 +35,25 @@ type TRNSignatureView = {
   onClear?: () => void;
 };
 
-const RNSignatureView =
+const SignatureNativeComponent =
   requireNativeComponent<TRNSignatureView>('RNSignatureView');
+
+const RNSignatureView = (props: TRNSignatureView) => (
+  <View style={[styles.defaultStyle, props.style]}>
+    <SignatureNativeComponent {...props} style={styles.signatureView} />
+  </View>
+);
+
+const styles = StyleSheet.create({
+  defaultStyle: {
+    width: '100%',
+    height: 180,
+    borderWidth: 1,
+  },
+  signatureView: {
+    width: '100%',
+    height: '100%',
+  },
+});
 
 export default RNSignatureView;
