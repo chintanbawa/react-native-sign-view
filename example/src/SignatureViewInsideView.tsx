@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Image, Platform, StyleSheet, View } from 'react-native';
-import RNSignatureView from 'react-native-signature-view';
+import RNSignatureView from '@cbawa/react-native-signature-view';
 
 export default function SignatureViewInsideView() {
   const [sign, setSign] = React.useState('');

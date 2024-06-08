@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Image, ScrollView, StyleSheet, View, Text } from 'react-native';
-import RNSignatureView from 'react-native-signature-view';
+import RNSignatureView from '@cbawa/react-native-signature-view';
 
 export default function SignatureViewInsideScrollView() {
   const [scrollEnabled, setScrollEnabled] = React.useState(true);
